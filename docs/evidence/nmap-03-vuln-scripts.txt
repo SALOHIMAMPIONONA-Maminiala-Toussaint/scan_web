@@ -1,0 +1,85 @@
+# Nmap 7.98 scan initiated Fri Mar  6 20:12:41 2026 as: /usr/lib/nmap/nmap --privileged -Pn -sV --script vuln -p 3000 -oN docs/evidence/nmap-03-vuln-scripts.txt localhost
+Nmap scan report for localhost (127.0.0.1)
+Host is up (0.000060s latency).
+Other addresses for localhost (not scanned): ::1
+
+PORT     STATE SERVICE VERSION
+3000/tcp open  ppp?
+| fingerprint-strings: 
+|   GetRequest, HTTPOptions: 
+|     HTTP/1.1 200 OK
+|     Content-Length: 749
+|     Content-Disposition: inline; filename="index.html"
+|     Accept-Ranges: bytes
+|     ETag: "c8f06ea975ab20de4b55e7a6c70210b2cfb86d29"
+|     Content-Type: text/html; charset=utf-8
+|     Vary: Accept-Encoding
+|     Date: Fri, 06 Mar 2026 17:13:04 GMT
+|     Connection: close
+|     <!doctype html>
+|     <html lang="fr">
+|     <head>
+|     <meta charset="UTF-8" />
+|     <link rel="icon" type="image/svg+xml" href="/favicon.ico" />
+|     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+|     <meta name="description" content="Syst
+|     gestion des pr
+|     sences par empreinte digitale" />
+|     <meta name="keywords" content="pr
+|     sence, empreinte digitale, gestion, 
+|     tudiants" />
+|     <meta name="author" content="Gestion Pr
+|     sences" />
+|     <title>Gestion Pr
+|     sences - Syst
+|     pointage biom
+|     trique</title>
+|     <script type="module" crossorigin src="/assets/index-B8vua5H8.js"></script>
+|   Help, NCP: 
+|     HTTP/1.1 400 Bad Request
+|_    Connection: close
+1 service unrecognized despite returning data. If you know the service/version, please submit the following fingerprint at https://nmap.org/cgi-bin/submit.cgi?new-service :
+SF-Port3000-TCP:V=7.98%I=7%D=3/6%Time=69AB0B20%P=x86_64-pc-linux-gnu%r(Get
+SF:Request,408,"HTTP/1\.1\x20200\x20OK\r\nContent-Length:\x20749\r\nConten
+SF:t-Disposition:\x20inline;\x20filename=\"index\.html\"\r\nAccept-Ranges:
+SF:\x20bytes\r\nETag:\x20\"c8f06ea975ab20de4b55e7a6c70210b2cfb86d29\"\r\nC
+SF:ontent-Type:\x20text/html;\x20charset=utf-8\r\nVary:\x20Accept-Encoding
+SF:\r\nDate:\x20Fri,\x2006\x20Mar\x202026\x2017:13:04\x20GMT\r\nConnection
+SF::\x20close\r\n\r\n<!doctype\x20html>\n<html\x20lang=\"fr\">\n\x20\x20<h
+SF:ead>\n\x20\x20\x20\x20<meta\x20charset=\"UTF-8\"\x20/>\n\x20\x20\x20\x2
+SF:0<link\x20rel=\"icon\"\x20type=\"image/svg\+xml\"\x20href=\"/favicon\.i
+SF:co\"\x20/>\n\x20\x20\x20\x20<meta\x20name=\"viewport\"\x20content=\"wid
+SF:th=device-width,\x20initial-scale=1\.0\"\x20/>\n\x20\x20\x20\x20<meta\x
+SF:20name=\"description\"\x20content=\"Syst\xc3\xa8me\x20de\x20gestion\x20
+SF:des\x20pr\xc3\xa9sences\x20par\x20empreinte\x20digitale\"\x20/>\n\x20\x
+SF:20\x20\x20<meta\x20name=\"keywords\"\x20content=\"pr\xc3\xa9sence,\x20e
+SF:mpreinte\x20digitale,\x20gestion,\x20\xc3\xa9tudiants\"\x20/>\n\x20\x20
+SF:\x20\x20<meta\x20name=\"author\"\x20content=\"Gestion\x20Pr\xc3\xa9senc
+SF:es\"\x20/>\n\x20\x20\x20\x20<title>Gestion\x20Pr\xc3\xa9sences\x20-\x20
+SF:Syst\xc3\xa8me\x20de\x20pointage\x20biom\xc3\xa9trique</title>\n\x20\x2
+SF:0\x20\x20<script\x20type=\"module\"\x20crossorigin\x20src=\"/assets/ind
+SF:ex-B8vua5H8\.js\"></script>\n\x20\x20\x20\x20")%r(Help,2F,"HTTP/1\.1\x2
+SF:0400\x20Bad\x20Request\r\nConnection:\x20close\r\n\r\n")%r(NCP,2F,"HTTP
+SF:/1\.1\x20400\x20Bad\x20Request\r\nConnection:\x20close\r\n\r\n")%r(HTTP
+SF:Options,408,"HTTP/1\.1\x20200\x20OK\r\nContent-Length:\x20749\r\nConten
+SF:t-Disposition:\x20inline;\x20filename=\"index\.html\"\r\nAccept-Ranges:
+SF:\x20bytes\r\nETag:\x20\"c8f06ea975ab20de4b55e7a6c70210b2cfb86d29\"\r\nC
+SF:ontent-Type:\x20text/html;\x20charset=utf-8\r\nVary:\x20Accept-Encoding
+SF:\r\nDate:\x20Fri,\x2006\x20Mar\x202026\x2017:13:04\x20GMT\r\nConnection
+SF::\x20close\r\n\r\n<!doctype\x20html>\n<html\x20lang=\"fr\">\n\x20\x20<h
+SF:ead>\n\x20\x20\x20\x20<meta\x20charset=\"UTF-8\"\x20/>\n\x20\x20\x20\x2
+SF:0<link\x20rel=\"icon\"\x20type=\"image/svg\+xml\"\x20href=\"/favicon\.i
+SF:co\"\x20/>\n\x20\x20\x20\x20<meta\x20name=\"viewport\"\x20content=\"wid
+SF:th=device-width,\x20initial-scale=1\.0\"\x20/>\n\x20\x20\x20\x20<meta\x
+SF:20name=\"description\"\x20content=\"Syst\xc3\xa8me\x20de\x20gestion\x20
+SF:des\x20pr\xc3\xa9sences\x20par\x20empreinte\x20digitale\"\x20/>\n\x20\x
+SF:20\x20\x20<meta\x20name=\"keywords\"\x20content=\"pr\xc3\xa9sence,\x20e
+SF:mpreinte\x20digitale,\x20gestion,\x20\xc3\xa9tudiants\"\x20/>\n\x20\x20
+SF:\x20\x20<meta\x20name=\"author\"\x20content=\"Gestion\x20Pr\xc3\xa9senc
+SF:es\"\x20/>\n\x20\x20\x20\x20<title>Gestion\x20Pr\xc3\xa9sences\x20-\x20
+SF:Syst\xc3\xa8me\x20de\x20pointage\x20biom\xc3\xa9trique</title>\n\x20\x2
+SF:0\x20\x20<script\x20type=\"module\"\x20crossorigin\x20src=\"/assets/ind
+SF:ex-B8vua5H8\.js\"></script>\n\x20\x20\x20\x20");
+
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+# Nmap done at Fri Mar  6 20:13:04 2026 -- 1 IP address (1 host up) scanned in 22.63 seconds
