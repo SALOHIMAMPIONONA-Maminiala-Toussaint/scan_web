@@ -1,9 +1,0 @@
-# Nmap 7.98 scan initiated Fri Mar  6 20:18:24 2026 as: /usr/lib/nmap/nmap --privileged -Pn -p 8000 -oN docs/evidence/nmap-backend-01-port-8000.txt localhost
-Nmap scan report for localhost (127.0.0.1)
-Host is up (0.00022s latency).
-Other addresses for localhost (not scanned): ::1
-
-PORT     STATE SERVICE
-8000/tcp open  http-alt
-
-# Nmap done at Fri Mar  6 20:18:24 2026 -- 1 IP address (1 host up) scanned in 0.12 seconds

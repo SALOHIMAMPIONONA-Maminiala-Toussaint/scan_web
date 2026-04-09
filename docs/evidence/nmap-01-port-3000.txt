@@ -1,9 +1,0 @@
-# Nmap 7.98 scan initiated Fri Mar  6 20:12:29 2026 as: /usr/lib/nmap/nmap --privileged -Pn -p 3000 -oN docs/evidence/nmap-01-port-3000.txt localhost
-Nmap scan report for localhost (127.0.0.1)
-Host is up (0.000078s latency).
-Other addresses for localhost (not scanned): ::1
-
-PORT     STATE SERVICE
-3000/tcp open  ppp
-
-# Nmap done at Fri Mar  6 20:12:29 2026 -- 1 IP address (1 host up) scanned in 0.20 seconds

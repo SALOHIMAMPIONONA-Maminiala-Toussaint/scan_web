@@ -1,0 +1,31 @@
+GUIDE D'UTILISATION
+- Lancer l'application: cd /home/mampionona/Documents/Projet/Analyse_risque/scan-pipeline && docker compose up --build -d
+- Fermer l'application: cd /home/mampionona/Documents/Projet/Analyse_risque/scan-pipeline && docker compose down
+- Vérifier l'état: docker compose ps
+- Vérifier le backend: curl -s http://localhost:8000/health
+
+HOSTS POUR NMAP
+- backend
+- frontend
+- postgres
+- redis
+- scan-pipeline-backend-1
+- scan-pipeline-postgres-1
+
+URLS POUR NIKTO / SQLMAP
+- http://localhost:8000/
+- http://localhost:8000/health
+- http://localhost:8000/api/v1/jobs
+- http://localhost:8000/api/v1/labs/sql-injection
+- http://localhost:8000/api/v1/labs/sql-injection?name=test
+
+RECOMMANDÉS
+- NMAP: backend
+- NMAP: scan-pipeline-backend-1
+- NIKTO: http://localhost:8000/
+- SQLMAP: http://localhost:8000/api/v1/labs/sql-injection?name=test
+
+TRIVY
+- filesystem: /app
+- filesystem: /tmp
+- image: nginx:latest

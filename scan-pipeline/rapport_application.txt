@@ -1,0 +1,134 @@
+RAPPORT DE L’APPLICATION DE SCAN DE VULNERABILITES
+
+1. INTRODUCTION
+L’application développée est une plateforme de scan de vulnérabilités conçue pour automatiser l’analyse de plusieurs types de cibles. Elle permet de lancer des vérifications réseau, web et container, puis d’afficher les résultats dans une interface moderne et lisible.
+
+2. OBJECTIF DU PROJET
+L’objectif principal de cette application est de fournir un outil centralisé capable de:
+- lancer des scans de sécurité depuis une interface web,
+- organiser les résultats par tâche,
+- visualiser les vulnérabilités détectées,
+- garder un historique des scans,
+- exporter les résultats pour un usage externe.
+
+3. TECHNOLOGIES UTILISEES
+Backend:
+- FastAPI
+- SQLAlchemy
+- Celery
+- Redis
+- PostgreSQL
+
+Frontend:
+- React
+- TypeScript
+- Vite
+
+Outils de scan intégrés:
+- Nmap
+- Nikto
+- SQLMap
+- Trivy
+
+Déploiement:
+- Docker
+- Docker Compose
+
+4. ARCHITECTURE GENERALE
+L’application est organisée en plusieurs parties:
+- le frontend affiche l’interface utilisateur,
+- le backend fournit les API,
+- le worker exécute les tâches de scan,
+- Redis gère la file d’attente,
+- PostgreSQL stocke les tâches et les résultats.
+
+Le fonctionnement général est le suivant:
+- l’utilisateur crée une tâche de scan,
+- la tâche est envoyée dans une file,
+- le worker lance les outils de sécurité,
+- les résultats sont analysés et enregistrés,
+- l’interface affiche les findings.
+
+5. FONCTIONNALITES PRINCIPALES
+L’application propose les fonctionnalités suivantes:
+- création d’une tâche de scan,
+- sélection d’un ou plusieurs outils,
+- ajout de plusieurs cibles,
+- affichage des tâches en cours et terminées,
+- affichage détaillé des résultats,
+- suppression d’une tâche,
+- suppression de toutes les tâches,
+- relance d’une tâche,
+- export des résultats en JSON et CSV,
+- filtrage et tri des findings,
+- affichage par sévérité et par outil.
+
+6. DETAILS DES OUTILS
+6.1 Nmap
+Nmap est utilisé pour analyser les hôtes et détecter les ports ouverts ainsi que les services exposés.
+
+6.2 Nikto
+Nikto sert à analyser les serveurs web et à rechercher des erreurs de configuration, des en-têtes manquants et d’autres faiblesses courantes.
+
+6.3 SQLMap
+SQLMap est utilisé pour tester les URL contenant des paramètres GET ou POST afin de détecter des risques d’injection SQL.
+
+6.4 Trivy
+Trivy est utilisé pour scanner des systèmes de fichiers ou des images Docker afin d’identifier des vulnérabilités connues.
+
+7. AMELIORATIONS APPORTEES
+Plusieurs améliorations ont été ajoutées au projet:
+- interface modernisée avec thème sombre premium,
+- meilleure lisibilité des résultats,
+- résumé des findings par sévérité,
+- filtres et tri avancés,
+- groupement des résultats par outil ou cible,
+- affichage plus clair des evidences,
+- export des résultats filtrés,
+- redirection de la racine backend vers l’interface web,
+- réinitialisation des identifiants après suppression totale des tâches.
+
+8. LIMITES ACTUELLES
+L’application est fonctionnelle pour les scans de base, mais certaines limites restent présentes:
+- elle ne couvre pas encore tous les types de vulnérabilités web,
+- elle ne réalise pas encore de crawling avancé,
+- elle ne gère pas encore les sessions authentifiées,
+- elle ne détecte pas encore certaines vulnérabilités applicatives complexes comme XSS, CSRF ou IDOR de manière complète.
+
+9. UTILISATION
+Pour lancer l’application:
+- cd /home/mampionona/Documents/Projet/Analyse_risque/scan-pipeline
+- docker compose up --build -d
+
+Pour arrêter l’application:
+- cd /home/mampionona/Documents/Projet/Analyse_risque/scan-pipeline
+- docker compose down
+
+URL du frontend:
+- http://localhost:5173
+
+URL du backend:
+- http://localhost:8000
+
+10. EXEMPLES DE CIBLES
+Pour Nmap:
+- backend
+- frontend
+- postgres
+- redis
+- scan-pipeline-backend-1
+
+Pour Nikto et SQLMap:
+- http://localhost:8000/
+- http://localhost:8000/health
+- http://localhost:8000/api/v1/jobs
+- http://localhost:8000/api/v1/labs/sql-injection?name=test
+
+Pour Trivy:
+- /app
+- /tmp
+- nginx:latest
+- ubuntu:22.04
+
+11. CONCLUSION
+Cette application constitue une base solide pour automatiser le scan de vulnérabilités dans un environnement dockerisé. Elle permet déjà d’exécuter plusieurs outils de sécurité, de centraliser les résultats et de les présenter dans une interface moderne. Le projet peut encore évoluer vers une plateforme plus complète de type SOC ou tableau de bord de sécurité avancé.

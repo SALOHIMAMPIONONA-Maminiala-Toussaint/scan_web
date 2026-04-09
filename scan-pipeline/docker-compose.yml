@@ -1,0 +1,60 @@
+services:
+  postgres:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_USER: scan
+      POSTGRES_PASSWORD: scan
+      POSTGRES_DB: scan_db
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+    ports:
+      - "5433:5432"
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+
+  backend:
+    build:
+      context: ./backend
+    environment:
+      DATABASE_URL: postgresql+psycopg2://scan:scan@postgres:5432/scan_db
+      REDIS_URL: redis://redis:6379/0
+      ARTIFACTS_DIR: /app/artifacts
+      CORS_ORIGINS: http://localhost:5173
+    volumes:
+      - ./artifacts:/app/artifacts
+    depends_on:
+      - postgres
+      - redis
+    ports:
+      - "8000:8000"
+
+  worker:
+    build:
+      context: ./backend
+    command: celery -A app.celery_app.celery_app worker -l info
+    environment:
+      DATABASE_URL: postgresql+psycopg2://scan:scan@postgres:5432/scan_db
+      REDIS_URL: redis://redis:6379/0
+      ARTIFACTS_DIR: /app/artifacts
+      CORS_ORIGINS: http://localhost:5173
+    volumes:
+      - ./artifacts:/app/artifacts
+    depends_on:
+      - postgres
+      - redis
+
+  frontend:
+    build:
+      context: ./frontend
+    environment:
+      VITE_API_BASE: http://localhost:8000
+    depends_on:
+      - backend
+    ports:
+      - "5173:5173"
+
+volumes:
+  pg_data:
