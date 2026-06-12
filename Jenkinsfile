@@ -1,122 +1,100 @@
 pipeline {
-    agent any
+agent any
 
-    environment {
-        COMPOSE_FILE = "scan-pipeline/docker-compose.yml"
-        PROJECT_DIR = "scan-pipeline"
+```
+environment {
+    COMPOSE_FILE = "scan-pipeline/docker-compose.yml"
+}
+
+options {
+    timestamps()
+    disableConcurrentBuilds()
+}
+
+stages {
+
+    stage('Checkout') {
+        steps {
+            checkout scm
+        }
     }
 
-    stages {
+    stage('Build Images') {
+        steps {
+            sh "docker compose -f ${COMPOSE_FILE} build"
+        }
+    }
 
-        stage('Checkout code') {
+    stage('Run Tests') {
+    parallel {
+        stage('Backend Tests') {
             steps {
-                checkout scm
+                sh "docker compose -f ${COMPOSE_FILE} run --rm backend pytest"
             }
         }
 
-        stage('Verify structure') {
-            steps {
-                sh '''
-                echo "Current directory:"
-                pwd
-                ls -la
-                ls -la scan-pipeline
-                '''
-            }
-        }
-
-        stage('Build Docker images') {
+        stage('Frontend Build Test') {
             steps {
                 sh """
-                docker compose -f ${COMPOSE_FILE} build
+                docker compose -f ${COMPOSE_FILE} run --rm frontend npm install
+                docker compose -f ${COMPOSE_FILE} run --rm frontend npm run build
                 """
             }
         }
-
-        stage('Start dependencies (DB + Redis)') {
-            steps {
-                sh """
-                docker compose -f ${COMPOSE_FILE} up -d postgres redis
-                """
-            }
-        }
-
-        stage('Start Backend') {
-            steps {
-                sh """
-                docker compose -f ${COMPOSE_FILE} up -d backend
-                """
-            }
-        }
-
-        stage('Run Backend Tests') {
-            steps {
-                sh """
-                docker compose -f ${COMPOSE_FILE} run --rm backend pytest || true
-                """
-            }
-        }
-
-        stage('Build Frontend') {
-            steps {
-                sh """
-                docker compose -f ${COMPOSE_FILE} build frontend
-                """
-            }
-        }
-
-        stage('Start Full Stack') {
-            steps {
-                sh """
-                docker compose -f ${COMPOSE_FILE} up -d
-                """
-            }
-        }
-
-       stage('Health Check Backend') {
-    steps {
-        sh '''
-        echo "Waiting backend..."
-
-        for i in $(seq 1 30); do
-            if curl -sf http://localhost:8000/docs; then
-                echo "Backend OK"
-                exit 0
-            fi
-
-            echo "Retry $i..."
-            sleep 3
-        done
-
-        echo "Backend failed"
-        exit 1
-        '''
     }
 }
 
-        stage('Logs (debug)') {
-            steps {
-                sh """
-                docker compose -f ${COMPOSE_FILE} logs --tail=50
-                """
-            }
-        }
-    }
-
-    post {
-        success {
-            echo " Pipeline réussi - Stack déployée correctement"
-        }
-
-        failure {
-            echo " Pipeline échoué - vérifier logs Docker"
+    stage('Deploy Stack') {
+        steps {
             sh """
-            docker compose -f ${COMPOSE_FILE} logs
+            docker compose -f ${COMPOSE_FILE} up -d
             """
         }
+    }
 
-        always {
-            echo "Cleanup optionnel (si nécessaire)"
+    stage('Health Check') {
+        steps {
+            sh '''
+            echo "Waiting for backend..."
+
+            for i in $(seq 1 30); do
+                if curl -sf http://localhost:8000/docs > /dev/null; then
+                    echo "Backend is healthy"
+                    exit 0
+                fi
+
+                sleep 3
+            done
+
+            echo "Backend health check failed"
+            exit 1
+            '''
         }
     }
 }
+
+post {
+
+    success {
+        echo "SUCCESS: Application deployed successfully"
+    }
+
+    failure {
+        echo "FAILURE: Deployment failed"
+
+        sh """
+        docker compose -f ${COMPOSE_FILE} ps || true
+        docker compose -f ${COMPOSE_FILE} logs --tail=200 || true
+        """
+    }
+
+    always {
+        sh """
+        docker compose -f ${COMPOSE_FILE} ps || true
+        """
+    }
+}
+```
+
+}
+
