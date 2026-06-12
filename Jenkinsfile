@@ -73,14 +73,22 @@ pipeline {
             }
         }
 
-        stage('Health Check Backend') {
-            steps {
-                sh """
-                echo "Checking backend..."
-                curl -f http://localhost:8000/docs || exit 1
-                """
-            }
-        }
+       stage('Health Check Backend') {
+    steps {
+        sh '''
+        echo "Waiting backend..."
+
+        for i in $(seq 1 20); do
+            curl -sf http://localhost:8000/docs && exit 0
+            echo "not ready yet... retry $i"
+            sleep 3
+        done
+
+        echo "Backend failed"
+        exit 1
+        '''
+    }
+}
 
         stage('Logs (debug)') {
             steps {
