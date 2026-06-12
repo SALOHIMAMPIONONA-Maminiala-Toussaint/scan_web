@@ -30,13 +30,13 @@ pipeline {
             }
         }
 
-        stage('Health Check') {
+       stage('Health Check') {
     steps {
         sh '''
         echo "Waiting for backend..."
 
         for i in $(seq 1 30); do
-            if curl -sf http://localhost:8000/health > /dev/null; then
+            if curl -sf http://backend:8000/health > /dev/null; then
                 echo "Backend is healthy"
                 exit 0
             fi
