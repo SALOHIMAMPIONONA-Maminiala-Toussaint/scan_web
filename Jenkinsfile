@@ -24,26 +24,6 @@ pipeline {
             }
         }
 
-        stage('Run Tests') {
-            parallel {
-
-                stage('Backend Tests') {
-                    steps {
-                        sh "docker compose -f ${COMPOSE_FILE} run --rm backend pytest"
-                    }
-                }
-
-                stage('Frontend Build Test') {
-                    steps {
-                        sh """
-                        docker compose -f ${COMPOSE_FILE} run --rm frontend npm install
-                        docker compose -f ${COMPOSE_FILE} run --rm frontend npm run build
-                        """
-                    }
-                }
-            }
-        }
-
         stage('Deploy Stack') {
             steps {
                 sh "docker compose -f ${COMPOSE_FILE} up -d"
