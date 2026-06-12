@@ -78,9 +78,13 @@ pipeline {
         sh '''
         echo "Waiting backend..."
 
-        for i in $(seq 1 20); do
-            curl -sf http://localhost:8000/docs && exit 0
-            echo "not ready yet... retry $i"
+        for i in $(seq 1 30); do
+            if curl -sf http://localhost:8000/docs; then
+                echo "Backend OK"
+                exit 0
+            fi
+
+            echo "Retry $i..."
             sleep 3
         done
 
