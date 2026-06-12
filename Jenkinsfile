@@ -31,25 +31,25 @@ pipeline {
         }
 
         stage('Health Check') {
-            steps {
-                sh '''
-                echo "Waiting for backend..."
+    steps {
+        sh '''
+        echo "Waiting for backend..."
 
-                for i in $(seq 1 30); do
-                    if curl -sf http://localhost:8000/docs > /dev/null; then
-                        echo "Backend is healthy"
-                        exit 0
-                    fi
+        for i in $(seq 1 30); do
+            if curl -sf http://localhost:8000/health > /dev/null; then
+                echo "Backend is healthy"
+                exit 0
+            fi
 
-                    echo "Retry $i..."
-                    sleep 3
-                done
+            echo "Retry $i..."
+            sleep 3
+        done
 
-                echo "Backend health check failed"
-                exit 1
-                '''
-            }
-        }
+        echo "Backend health check failed"
+        exit 1
+        '''
+    }
+}
     }
 
     post {
